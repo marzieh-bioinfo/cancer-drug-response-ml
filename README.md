@@ -15,4 +15,10 @@ This project is about **predicting how cancer cells respond to drugs** using **g
 - pandas, numpy, scikit-learn
 - matplotlib / seaborn
 
+## Data
+
+Public pharmacogenomics data from Kaggle:  
+“Genomics of Drug Sensitivity in Cancer (GDSC)” – downloaded as a zip and used locally  
+(gene expression and drug response for many cancer cell lines and drugs).
+
 This project shows my skills in **bioinformatics, data analysis and machine learning** on real biological data.
