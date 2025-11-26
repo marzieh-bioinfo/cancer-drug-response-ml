@@ -1,0 +1,63 @@
+=== DATASET OVERVIEW ===
+Shape (rows, columns): 242035 rows, 19 columns
+
+=== COLUMNS ===
+COSMIC_ID, CELL_LINE_NAME, TCGA_DESC, DRUG_ID, DRUG_NAME, LN_IC50, AUC, Z_SCORE, GDSC Tissue descriptor 1, GDSC Tissue descriptor 2, Cancer Type (matching TCGA label), Microsatellite instability Status (MSI), Screen Medium, Growth Properties, CNA, Gene Expression, Methylation, TARGET, TARGET_PATHWAY
+
+=== DATA TYPES (first 40 columns) ===
+COSMIC_ID                                    int64
+CELL_LINE_NAME                              object
+TCGA_DESC                                   object
+DRUG_ID                                      int64
+DRUG_NAME                                   object
+LN_IC50                                    float64
+AUC                                        float64
+Z_SCORE                                    float64
+GDSC Tissue descriptor 1                    object
+GDSC Tissue descriptor 2                    object
+Cancer Type (matching TCGA label)           object
+Microsatellite instability Status (MSI)     object
+Screen Medium                               object
+Growth Properties                           object
+CNA                                         object
+Gene Expression                             object
+Methylation                                 object
+TARGET                                      object
+TARGET_PATHWAY                              object
+
+=== MISSING VALUES (top 30 columns by NA count) ===
+Cancer Type (matching TCGA label)          51446
+TARGET                                     27155
+Microsatellite instability Status (MSI)    12353
+GDSC Tissue descriptor 2                    9366
+Methylation                                 9366
+Gene Expression                             9366
+CNA                                         9366
+Growth Properties                           9366
+GDSC Tissue descriptor 1                    9366
+Screen Medium                               9366
+TCGA_DESC                                   1067
+COSMIC_ID                                      0
+CELL_LINE_NAME                                 0
+Z_SCORE                                        0
+AUC                                            0
+LN_IC50                                        0
+DRUG_NAME                                      0
+DRUG_ID                                        0
+TARGET_PATHWAY                                 0
+
+=== NUMERIC SUMMARY (first 20 features) ===
+              count           mean            std            min            25%            50%           75%           max
+COSMIC_ID  242035.0  992107.148487  220981.426065  683667.000000  906805.000000  909720.000000  1.240144e+06  1.789883e+06
+DRUG_ID    242035.0    1594.044886     398.739728    1003.000000    1149.000000    1631.000000  1.912000e+03  2.499000e+03
+LN_IC50    242035.0       2.817111       2.762191      -8.747724       1.508054       3.236744  4.700111e+00  1.382019e+01
+AUC        242035.0       0.882593       0.146998       0.006282       0.849452       0.944197  9.749340e-01  9.989040e-01
+Z_SCORE    242035.0       0.000006       0.999390      -8.254501      -0.656842       0.010585  6.560365e-01  7.978776e+00
+
+=== FIRST 5 ROWS ===
+   COSMIC_ID CELL_LINE_NAME     TCGA_DESC  DRUG_ID     DRUG_NAME   LN_IC50       AUC   Z_SCORE GDSC Tissue descriptor 1 GDSC Tissue descriptor 2 Cancer Type (matching TCGA label) Microsatellite instability Status (MSI) Screen Medium Growth Properties CNA Gene Expression Methylation TARGET   TARGET_PATHWAY
+0     683667         PFSK-1            MB     1003  Camptothecin -1.463887  0.930220  0.433123           nervous_system          medulloblastoma                                MB                               MSS/MSI-L             R          Adherent   Y               Y           Y   TOP1  DNA replication
+1     684057            ES5  UNCLASSIFIED     1003  Camptothecin -3.360586  0.791072 -0.599569                     bone           ewings_sarcoma                               NaN                               MSS/MSI-L             R          Adherent   Y               Y           Y   TOP1  DNA replication
+2     684059            ES7  UNCLASSIFIED     1003  Camptothecin -5.044940  0.592660 -1.516647                     bone           ewings_sarcoma                               NaN                               MSS/MSI-L             R          Adherent   Y               Y           Y   TOP1  DNA replication
+3     684062          EW-11  UNCLASSIFIED     1003  Camptothecin -3.741991  0.734047 -0.807232                     bone           ewings_sarcoma                               NaN                               MSS/MSI-L             R          Adherent   Y               Y           Y   TOP1  DNA replication
+4     684072        SK-ES-1  UNCLASSIFIED     1003  Camptothecin -5.142961  0.582439 -1.570016                     bone           ewings_sarcoma                               NaN                               MSS/MSI-L             R     Semi-Adherent   Y               Y           Y   TOP1  DNA replication
