@@ -2,11 +2,19 @@
 """
 03_train_baseline_model.py
 
-Train simple baseline models to predict LN_IC50 from summary features.
+Train simple baseline models to predict LN_IC50 from non-leaky summary features.
 
 Models:
 - Ridge regression
 - Random forest regressor
+
+Features used (by default):
+- DRUG_ID
+- COSMIC_ID
+
+NOTE:
+We deliberately do NOT use AUC or Z_SCORE here, because they are derived from
+the same dose–response curve as LN_IC50 and make the prediction task almost trivial.
 
 Outputs:
 - results/models/baseline_metrics.csv
@@ -28,8 +36,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
 LOGGER = logging.getLogger("cdr_ml.train")
 
@@ -46,7 +54,9 @@ class TrainConfig:
     out_dir: Path = PROJECT_ROOT / "results" / "models"
 
     target_column: str = "LN_IC50"
-    feature_columns: tuple[str, ...] = ("COSMIC_ID", "DRUG_ID", "AUC", "Z_SCORE")
+
+    # More challenging: no AUC or Z_SCORE, only IDs
+    feature_columns: tuple[str, ...] = ("DRUG_ID", "COSMIC_ID")
 
     test_size: float = 0.2
     random_state: int = 42
@@ -146,12 +156,7 @@ def eval_model(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, float]:
     rmse = np.sqrt(mse)
     mae = mean_absolute_error(y_true, y_pred)
     r2 = r2_score(y_true, y_pred)
-    return {
-        "mse": mse,
-        "rmse": rmse,
-        "mae": mae,
-        "r2": r2,
-    }
+    return {"mse": mse, "rmse": rmse, "mae": mae, "r2": r2}
 
 
 def save_scatter_plot(
@@ -166,7 +171,7 @@ def save_scatter_plot(
         min(np.min(y_true), np.min(y_pred)),
         max(np.max(y_true), np.max(y_pred)),
     ]
-    plt.plot(lims, lims)  # y=x line
+    plt.plot(lims, lims)
     plt.xlabel("True LN_IC50")
     plt.ylabel("Predicted LN_IC50")
     plt.title(title)
@@ -213,11 +218,10 @@ def main() -> None:
         model.fit(X_train, y_train)
         y_pred = model.predict(X_test)
 
-        metrics = eval_model(y_test, y_pred)
+        metrics = eval_model(y_test.values, y_pred)
         metrics["model"] = name
         metrics_rows.append(metrics)
 
-        # Save predictions
         preds_df = pd.DataFrame(
             {"y_true": y_test.values, "y_pred": y_pred},
             index=y_test.index,
@@ -226,7 +230,6 @@ def main() -> None:
         preds_df.to_csv(preds_path, index=False)
         LOGGER.info("Saved predictions to %s", preds_path)
 
-        # Scatter plot
         plot_path = cfg.out_dir / f"{name}_scatter.png"
         save_scatter_plot(
             y_true=y_test.values,
@@ -235,7 +238,6 @@ def main() -> None:
             title=f"{name} - True vs Predicted LN_IC50",
         )
 
-    # Save metrics table
     metrics_df = pd.DataFrame(metrics_rows).set_index("model")
     metrics_path = cfg.out_dir / "baseline_metrics.csv"
     metrics_df.to_csv(metrics_path)
