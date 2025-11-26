@@ -39,15 +39,15 @@ to predict drug sensitivity (**LN_IC50**) from simple features (`COSMIC_ID`, `DR
 
 **Pipeline:**
 
-- `script/01_explore_data.py`  
+- `script/1_explore_data.py`  
   Exploratory data analysis (EDA) and summary of the dataset.  
   Output: `results/eda/eda_summary.txt`.
 
-- `script/02_prepare_dataset.py`  
+- `script/2_prepare_dataset.py`  
   Builds a clean modelling table.  
   Output: `results/processed/model_data.csv`.
 
-- `script/03_train_baseline_model.py`  
+- `script/3_train_baseline_model.py`  
   Trains baseline models (ridge regression and random forest) and evaluates performance.  
   Outputs: metrics and plots in `results/models/`.
 
