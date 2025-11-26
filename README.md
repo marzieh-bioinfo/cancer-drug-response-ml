@@ -25,39 +25,40 @@ This project demonstrates my skills in **bioinformatics, data analysis, and mach
 
 ---
 
-## Baseline Experiment (Summary)
+## Project Workflow
 
-Using ~242,000 drug–cell line pairs from the GDSC summary table, I trained baseline models to predict **LN_IC50** from simple features (`COSMIC_ID`, `DRUG_ID`, `AUC`, `Z_SCORE`).  
-A ridge regression model explained ~64% of the variance (R² ≈ 0.64), while a random forest achieved **R² ≈ 0.99** and **RMSE ≈ 0.30**, indicating that non-linear models can almost fully capture the relationship between these summary descriptors and drug sensitivity.
-
----
-
-## Current Results
-
-Using 242,035 drug–cell line pairs from the GDSC summary table, I trained baseline models
-to predict drug sensitivity (**LN_IC50**) from simple features (`COSMIC_ID`, `DRUG_ID`, `AUC`, `Z_SCORE`).
-
-**Pipeline:**
+Using 242,035 drug–cell line pairs from the GDSC summary table, I organise the analysis as a small, reproducible pipeline:
 
 - `script/1_explore_data.py`  
   Exploratory data analysis (EDA) and summary of the dataset.  
   Output: `results/eda/eda_summary.txt`.
 
 - `script/2_prepare_dataset.py`  
-  Builds a clean modelling table.  
+  Builds a clean modelling table, selecting relevant columns and handling missing values.  
   Output: `results/processed/model_data.csv`.
 
 - `script/3_train_baseline_model.py`  
-  Trains baseline models (ridge regression and random forest) and evaluates performance.  
+  Trains baseline models (ridge regression and random forest) to predict **LN_IC50**  
+  from simple identifier features and evaluates performance.  
   Outputs: metrics and plots in `results/models/`.
 
-**Baseline performance (test set):**
+---
 
-| Model         | RMSE |  MAE |   R² |
-|---------------|-----:|-----:|-----:|
-| Ridge         | 1.67 | 1.15 | 0.64 |
-| Random forest | 0.31 | 0.11 | 0.99 |
+## Baseline experiment: non-leaky features
 
-The random forest model explains ~99% of the variance in **LN_IC50**, showing that
-even simple summary features contain strong signal about drug response.  
-Generated plots and metrics are stored in `results/models/`.
+In this baseline, I deliberately use only simple identifier features (`DRUG_ID`, `COSMIC_ID`) to predict **LN_IC50**, and exclude AUC and Z-score to avoid target leakage from the dose–response curve.
+
+**Test performance:**
+
+| Model         |  RMSE |  MAE |   R² |
+|---------------|------:|-----:|-----:|
+| Ridge         |  2.72 | 2.08 | 0.03 |
+| Random forest |  1.61 | 1.20 | 0.66 |
+
+The linear ridge model explains almost none of the variance (R² ≈ 0.03), while the non-linear
+random forest still captures about 66% of the variance in **LN_IC50** (R² ≈ 0.66). This indicates that:
+
+1. drug response is strongly structured across drug–cell line combinations, and  
+2. meaningful signal is present even when not using direct dose–response summaries such as AUC or Z-score.
+
+Generated metrics and prediction plots are stored in `results/models/`.
